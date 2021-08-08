@@ -23,4 +23,4 @@ The project was inspired Street Group. This repor leverages on dask functionalit
 ## Usage
 ------------
 To run load, process and transform data:
-python run_pipeline.py --filename=.data/raw/file.csv --file-output=.data/processed/output.json
+> python run_pipeline.py --filename=.data/raw/file.csv --file-output=.data/processed/output.json
