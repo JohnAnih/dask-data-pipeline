@@ -1,6 +1,6 @@
 # dask-data-pipeline
 
-The project was inspired Street Group. This repor leverages on dask functionalities to load, extract and transform data as a JSON file.
+The project was inspired by Street Group. This repo leverages on dask functionalities to load, extract and transform data as a JSON file.
 
 ## Directory structure
 ------------
