@@ -28,7 +28,7 @@ class DataPipeline:
         else:
             self.dtypes = dtypes
 
-        # load the dask dataframe and assign it
+        # load the dask dataframe and assign it as an attribute ready to be accessed
         self._load_dataframe()
 
     def _load_dataframe(self) -> None:
