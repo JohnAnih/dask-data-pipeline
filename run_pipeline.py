@@ -1,9 +1,12 @@
 import argparse
+import warnings
+
 
 from processing.data_pipeline import DataPipeline
 
 
 if __name__ == "__main__":
+    warnings.simplefilter("ignore")
     parser = argparse.ArgumentParser(description="Implement the data pipeline")
     parser.add_argument(
         "--filename",

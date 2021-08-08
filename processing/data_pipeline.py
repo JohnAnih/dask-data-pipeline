@@ -24,7 +24,7 @@ class DataPipeline:
         self.columns = Columns().names()
 
         if dtypes is None:
-            self.dtypes = {"paon": "object", "saon": "object"}
+            self.dtypes = {"paon": "object", "saon": "object", "price": "float64"}
         else:
             self.dtypes = dtypes
 
@@ -68,3 +68,4 @@ class DataPipeline:
             date_unit="ms",
             default_handler=None,
         )
+        print("data saved...")
