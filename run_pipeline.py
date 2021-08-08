@@ -16,7 +16,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--file-output",
-        "-ouput",
+        "-output",
         default="./data/processed/data.json",
         help="To save the data as a newline delimited JSON format",
     )
