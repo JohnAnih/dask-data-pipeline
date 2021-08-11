@@ -1,3 +1,4 @@
+import os
 from typing import Dict
 
 import dask.dataframe as dd
@@ -39,33 +40,37 @@ class DataPipeline:
             header=None,
             **self.kwargs,
         )
-        self._create_unque_id()
-        self._rearrange_column_names()
+        self._create_transaction_id()
 
-    def _create_unque_id(self):
-        # create unique id from column names
-        self._data["id"] = (
-            (self._data.groupby(self.columns[1:]).cumcount() == 0).astype(int).cumsum()
+    def _create_transaction_id(self):
+        self._data["transaction_id"] = self._data.apply(
+            lambda row: row["unique_id"].split("-")[0].strip("{"), axis=1
         )
-        self._data["id"] = self._data["id"].cumsum()
-
-    def _rearrange_column_names(self):
-        columns = list(self._data.columns)
-        columns = [columns[-1]] + columns[:-1]
-        self._data = self._data[columns]
+        self.property_groups = self._data.groupby("transaction_id")
+        self.groups = self._data.transaction_id.unique().compute().tolist()
 
     def data(self):
         return self._data
 
-    def save_data_as_json(self, output_file: str):
-        print(f"saving JSON data: {output_file}")
-        self._data.to_json(
-            output_file,
-            orient="records",
-            date_format="epoch",
-            double_precision=10,
-            force_ascii=True,
-            date_unit="ms",
-            default_handler=None,
-        )
+    def save_data_as_json(self, folder_name: str):
+        print(f"saving JSON data to folder: {folder_name}")
+
+        for group in self.groups:
+            data = self.property_groups.get_group(group).compute()
+
+            if not os.path.exists(folder_name):
+                os.makedirs(folder_name)
+
+            filename = folder_name + "/" + group + ".json"
+
+            data.to_json(
+                filename,
+                orient="records",
+                date_format="epoch",
+                double_precision=10,
+                force_ascii=True,
+                date_unit="ms",
+                default_handler=None,
+            )
+
         print("data saved...")

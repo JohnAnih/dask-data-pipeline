@@ -1,3 +1,4 @@
+import sys
 import argparse
 import warnings
 
@@ -9,18 +10,25 @@ if __name__ == "__main__":
     parser.add_argument(
         "--filename",
         "-input",
-        default="./data/raw/pp-complete.csv",
+        default="./data/raw/pp-2021.csv",
         help="The CSV price paid data file",
     )
     parser.add_argument(
-        "--file-output",
+        "--output-folder",
         "-output",
-        default="./data/processed/data.json",
+        default="./data/processed/data",
         help="To save the data as a newline delimited JSON format",
     )
     args = parser.parse_args()
 
-    data_pipe = DataPipeline(args.filename)
+    try:
+        data_pipe = DataPipeline(args.filename)
+
+    except FileNotFoundError:
+        print(
+            "Oops! File not found. Ensure you saved the data in the data/raw directory"
+        )
+        sys.exit(1)
 
     print("Head of the data: ")
     print("-" * 20)
@@ -30,4 +38,4 @@ if __name__ == "__main__":
     print("-" * 20)
 
     print("About to save data as a JSON file")
-    data_pipe.save_data_as_json(args.file_output)
+    data_pipe.save_data_as_json(args.output_folder)
